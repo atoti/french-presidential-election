@@ -1,6 +1,8 @@
-# atoti Project Template
+# atoti Project Adaptation
 
-This template can be used to start atoti projects where the goal is to go into production rather than prototyping in a notebook.
+This project shows how we can translate the atoti notebook - [French presidential election 2022](https://github.com/atoti/notebooks/blob/master/notebooks/french-presidential-election) - into an actual project, ready for deployment into Heroku.
+
+It is adapted from the [atoti project template](https://github.com/atoti/project-template).
 
 On top of the `atoti` package, it comes with:
 
@@ -47,10 +49,23 @@ A few examples:
   poetry run format --fix
   ```
 
-## Variants
+## Atoti+
 
-This repository has the following long-lived branches showcasing different aspects:
+This version includes [the modifications](https://github.com/atoti/project-template/compare/atoti-plus) for Atoti+ in order to turn on authentication.  
+Authentication is required in order to control access to the web application and prevent overwriting of dashboards by unauthorised personnel.  
+Refer to [create_users.py](app/create_users.py) for the authorised users and their access rights.
 
-- [`atoti-plus`](https://github.com/atoti/project-template/tree/atoti-plus) for upgrading to Atoti+.
-- [`deploy-to-aws`](https://github.com/atoti/project-template/tree/deploy-to-aws) for deploying on AWS ECS.
-- [`deploy-to-heroku`](https://github.com/atoti/project-template/tree/deploy-to-heroku) for a one-click deploy to Heroku.
+### Required environment variables
+
+- `POETRY_HTTP_BASIC_ATOTI_PLUS_USERNAME` and `POETRY_HTTP_BASIC_ATOTI_PLUS_PASSWORD` to install the `atoti-plus` plugin.
+- A valid `ATOTI_LICENSE` to start the application.
+
+## Deploy to Heroku
+
+This project also includes [the modifications](https://github.com/atoti/project-template/compare/deploy-to-heroku) required to deploy it to Heroku.
+
+Click on the button below to deploy this project to Heroku:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+_Note_: to deploy a project started from this template, remember to change the `repository` value in [app.json](app.json).

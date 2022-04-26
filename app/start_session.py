@@ -1,4 +1,5 @@
 import sys
+from app.create_users import create_users
 
 import atoti as tt
 from pydantic import AnyUrl
@@ -11,6 +12,7 @@ from .load_tables import load_tables
 
 def create_session(*, config: Config) -> tt.Session:
     return tt.Session(
+        authentication=tt.BasicAuthenticationConfig(),
         logging=tt.LoggingConfig(destination=sys.stdout),
         port=config.port,
         user_content_storage=config.user_content_storage
@@ -25,6 +27,7 @@ def create_session(*, config: Config) -> tt.Session:
 def start_session(*, config: Config) -> tt.Session:
     """Start the session, declare the data model and load the initial data."""
     session = create_session(config=config)
+    create_users(session)
     create_and_join_tables(session)
     create_cubes(session)
     load_tables(session, config=config)

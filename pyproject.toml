@@ -1,11 +1,15 @@
 [tool.poetry]
 name = "app"
 version = "0.1.0"
-description = ""
-authors = []
+description = "French presidential election 2022"
+authors = ["atoti <contact@atoti.io>"]
+
+[[tool.poetry.source]]
+name = "atoti-plus"
+url = "https://pypi.atoti.io/simple/"
 
 [tool.poetry.dependencies]
-atoti = {extras = ["sql"], version = "*"}
+atoti = {extras = ["sql","aws","plus"], version = "*"}
 # Poetry deletes this package when the --no-dev flag is enabled because it is a dependency of requests, however it is needed for package installation.
 certifi = "*"
 numpy = "*"
@@ -14,6 +18,8 @@ pydantic = "*"
 # Cannot use pinned version as it leads to NoCompatiblePythonVersionFound error when doing a fresh install.
 python = "^3.9, !=3.9.7"
 requests = "*"
+lxml = "^4.8.0"
+html5lib = "^1.1"
 
 [tool.poetry.dev-dependencies]
 black = "*"

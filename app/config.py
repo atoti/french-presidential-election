@@ -23,22 +23,16 @@ class Config(BaseSettings):
 
     data_refresh_period: Optional[timedelta] = timedelta(minutes=1)
 
+    aws_s3_path = "s3://data.atoti.io/notebooks/french-presidential-election-2022/"
+
     # The $PORT environment variable is used by most PaaS to indicate the port the app server should bind to.
     port: int = 9090
-
-    reverse_geocoding_path: Union[HttpUrl, FilePath] = Field(
-        default="https://api-adresse.data.gouv.fr/reverse/csv/"
-    )
 
     user_content_storage: Optional[Union[PostgresDsn, Path]] = Field(
         default=Path("content"),
         # $DATABASE_URL is used by some PaaS such to designate the URL of the app's primary database.
         # For instance: https://devcenter.heroku.com/articles/heroku-postgresql#designating-a-primary-database.
         env="database_url",
-    )
-
-    velib_data_base_path: Union[HttpUrl, DirectoryPath] = Field(
-        default="https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole"
     )
 
     @validator("user_content_storage")

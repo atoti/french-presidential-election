@@ -27,26 +27,24 @@ On top of the `atoti` package, it comes with:
 
 ### Commands
 
-The [`pyproject.toml` file](pyproject.toml) contains a `[tool.poetry.scripts]` section listing the commands that can be executed to interact with the project.
-Some of these commands are fixable.
+To get a list of the commands that can be executed to interact with the project, run:
+
+```bash
+poetry run app --help
+```
+
 A few examples:
 
 - Start the app:
 
   ```bash
-  poetry run start
-  ```
-
-- Launch the tests:
-
-  ```bash
-  poetry run test
+  poetry run app start
   ```
 
 - Reformat the code:
 
   ```bash
-  poetry run format --fix
+  poetry run app format
   ```
 
 ## Atoti+

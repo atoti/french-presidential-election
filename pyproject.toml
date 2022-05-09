@@ -23,21 +23,19 @@ html5lib = "^1.1"
 
 [tool.poetry.dev-dependencies]
 black = "*"
+colorama = "*"
 docker = "*"
 isort = "*"
 mypy = "*"
 pandas-stubs = "*"
 pylint = "*"
 pytest = "*"
+pytest-xdist = "*"
+typer = "*"
 types-requests = "*"
 
 [tool.poetry.scripts]
-format = "scripts:format"
-lint = "scripts:lint"
-sort-imports = "scripts:sort_imports"
-start = "scripts:start"
-test = "scripts:test"
-typecheck = "scripts:typecheck"
+app = "cli:app"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -48,6 +46,7 @@ profile = "black"
 combine_as_imports = "True"
 
 [tool.mypy]
+plugins = "pydantic.mypy"
 strict = true
 
 [[tool.mypy.overrides]]

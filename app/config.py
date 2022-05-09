@@ -21,7 +21,7 @@ class Config(BaseSettings):
     See https://pydantic-docs.helpmanual.io/usage/settings/.
     """
 
-    data_refresh_period: Optional[timedelta] = timedelta(minutes=1)
+    data_refresh_period: Optional[timedelta] = timedelta(minutes=5)
 
     aws_s3_path = "s3://data.atoti.io/notebooks/french-presidential-election-2022/"
 
@@ -43,3 +43,6 @@ class Config(BaseSettings):
             if isinstance(value, PostgresDsn)
             else value
         )
+
+    class Config:
+        allow_mutation = False

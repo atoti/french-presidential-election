@@ -1,11 +1,19 @@
+from __future__ import annotations
+
+from collections.abc import Iterable, Mapping
+from datetime import timedelta
+from pathlib import Path
+from typing import Any, cast
+
 import atoti as tt
 import pandas as pd
+from pydantic import HttpUrl
+
 from .config import Config
 from .constants import Table
 
 
 def load_tables(session: tt.Session, /, *, config: Config) -> None:
-
     with session.start_transaction():
         session.tables[Table.CANDIDATE_TBL.value].load_csv(
             f"{config.aws_s3_path}candidate_mapping.csv"

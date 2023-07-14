@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import atoti as tt
 
 from .constants import (
@@ -92,24 +94,32 @@ def create_location_table(session: tt.Session, /) -> None:
 
 
 def join_tables(session: tt.Session, /) -> None:
-    session.tables[Table.CANDIDATE_TBL.value].join(
-        session.tables[Table.CANDIDATE_DTL_TBL.value]
+    candidate_tbl = session.tables[Table.CANDIDATE_TBL.value]
+    candidate_dtl_tbl = session.tables[Table.CANDIDATE_DTL_TBL.value]
+    state_result_tbl = session.tables[Table.STATE_RESULTS_TBL.value]
+    statistic_tbl = session.tables[Table.STATISTICS_TBL.value]
+    location_tbl = session.tables[Table.LOCATION_TBL.value]
+
+    candidate_tbl.join(
+        candidate_dtl_tbl,
+        (
+            candidate_tbl[CandidateTableColumn.CANDIDATE_ID.value]
+            == candidate_dtl_tbl[CandidateDtlTableColumn.CANDIDATE_ID.value]
+        )
+        & (
+            candidate_tbl[CandidateTableColumn.CANDIDATE_NAME.value]
+            == candidate_dtl_tbl[CandidateDtlTableColumn.CANDIDATE_NAME.value]
+        ),
     )
 
-    session.tables[Table.CANDIDATE_TBL.value].join(
-        session.tables[Table.STATE_RESULTS_TBL.value],
-        mapping={
-            CandidateTableColumn.DISPLAYED_NAME.value: StateResultsTableColumn.CANDIDATE_NAME.value
-        },
+    candidate_tbl.join(
+        state_result_tbl,
+        candidate_tbl[CandidateTableColumn.DISPLAYED_NAME.value]
+        == state_result_tbl[StateResultsTableColumn.CANDIDATE_NAME.value],
     )
 
-    session.tables[Table.STATE_RESULTS_TBL.value].join(
-        session.tables[Table.STATISTICS_TBL.value]
-    )
-
-    session.tables[Table.STATE_RESULTS_TBL.value].join(
-        session.tables[Table.LOCATION_TBL.value]
-    )
+    state_result_tbl.join(statistic_tbl)
+    state_result_tbl.join(location_tbl)
 
 
 def create_and_join_tables(session: tt.Session, /) -> None:

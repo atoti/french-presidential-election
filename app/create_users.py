@@ -1,12 +1,13 @@
+from __future__ import annotations
+
 import atoti as tt
 
 
 def create_users(session: tt.Session, /) -> None:
-    elon = session.security.basic.create_user("user", password="user")
-    session.security.individual_roles[elon.username].add("ROLE_USER")
-    print(f"User created with roles: {elon.roles}")
+    session.security.basic.credentials["user"] = "user"
+    session.security.individual_roles["user"] = {"ROLE_USER"}
+    print(f"User created with roles: {session.security.individual_roles['user']}")
 
-    admin = session.security.basic.create_user("tt_admin", password="tt_admin")
-    session.security.individual_roles[admin.username].add("ROLE_ADMIN")
-    session.security.individual_roles[admin.username].add("ROLE_SHARE")
-    print(f"Admin created with roles: {admin.roles}")
+    session.security.basic.credentials["tt_admin"] = "tt_admin"
+    session.security.individual_roles["tt_admin"] = {"ROLE_ADMIN", "ROLE_USER"}
+    print(f"Admin created with roles: {session.security.individual_roles['tt_admin']}")

@@ -4,9 +4,9 @@ import atoti as tt
 
 from .constants import (
     Cube,
+    ElectionCubeHierarchy,
     ElectionCubeLevel,
     ElectionCubeMeasure,
-    ElectionCubeHierarchy,
     LocationTableColumn,
     StateResultsTableColumn,
     StatisticsTableColumn,
@@ -149,7 +149,7 @@ def create_election_cube(session: tt.Session, /) -> None:
         }
     )
 
-    for measure_name in m.keys():
+    for measure_name in m:
         if "% " in measure_name:
             m[measure_name].formatter = "DOUBLE[0.000%]"
 

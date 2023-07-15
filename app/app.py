@@ -20,8 +20,6 @@ class App:
         return self._session
 
     def close(self) -> None:
-        if self._stop_refreshing_data:
-            self._stop_refreshing_data()
         self.session.close()
 
     def __enter__(self) -> App:

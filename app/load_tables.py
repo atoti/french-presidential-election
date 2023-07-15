@@ -47,21 +47,36 @@ def load_tables(session: tt.Session, /, *, config: Config) -> None:
         )
 
     logging.info(
-        "Loaded into %s - columns: %d, rows: %d",  Table.CANDIDATE_TBL.value, len(session.tables[Table.CANDIDATE_TBL.value].columns), len(session.tables[Table.CANDIDATE_TBL.value])
+        "Loaded into %s - columns: %d, rows: %d",
+        Table.CANDIDATE_TBL.value,
+        len(session.tables[Table.CANDIDATE_TBL.value].columns),
+        len(session.tables[Table.CANDIDATE_TBL.value]),
     )
 
     logging.info(
-        "Loaded into %s - columns: %d, rows: %d", Table.CANDIDATE_DTL_TBL.value, len(session.tables[Table.CANDIDATE_DTL_TBL.value].columns), len(session.tables[Table.CANDIDATE_DTL_TBL.value])
+        "Loaded into %s - columns: %d, rows: %d",
+        Table.CANDIDATE_DTL_TBL.value,
+        len(session.tables[Table.CANDIDATE_DTL_TBL.value].columns),
+        len(session.tables[Table.CANDIDATE_DTL_TBL.value]),
     )
 
     logging.info(
-        "Loaded into %s - columns: %d, rows: %d", Table.STATE_RESULTS_TBL.value, len(session.tables[Table.STATE_RESULTS_TBL.value].columns), len(session.tables[Table.STATE_RESULTS_TBL.value])
+        "Loaded into %s - columns: %d, rows: %d",
+        Table.STATE_RESULTS_TBL.value,
+        len(session.tables[Table.STATE_RESULTS_TBL.value].columns),
+        len(session.tables[Table.STATE_RESULTS_TBL.value]),
     )
 
     logging.info(
-        "Loaded into %s - columns: %d, rows: %d", Table.STATISTICS_TBL.value, len(session.tables[Table.STATISTICS_TBL.value].columns), len(session.tables[Table.STATISTICS_TBL.value])
+        "Loaded into %s - columns: %d, rows: %d",
+        Table.STATISTICS_TBL.value,
+        len(session.tables[Table.STATISTICS_TBL.value].columns),
+        len(session.tables[Table.STATISTICS_TBL.value]),
     )
 
     logging.info(
-        "Loaded into %s - columns: %d, rows: %d", Table.LOCATION_TBL.value, len(session.tables[Table.LOCATION_TBL.value].columns), len(session.tables[Table.LOCATION_TBL.value])
+        "Loaded into %s - columns: %d, rows: %d",
+        Table.LOCATION_TBL.value,
+        len(session.tables[Table.LOCATION_TBL.value].columns),
+        len(session.tables[Table.LOCATION_TBL.value]),
     )

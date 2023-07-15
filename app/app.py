@@ -15,7 +15,6 @@ class App:
         # The config is kept private to deter passing an App to functions when a Config is all they need.
         self._session = start_session(config=config)
 
-
     @property
     def session(self) -> tt.Session:
         return self._session

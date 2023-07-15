@@ -7,5 +7,5 @@ from . import App, Config
 config = Config()
 
 with App(config=config) as app:
-    logging.info(f"Session listening on port {app.session.port}")
+    logging.info("Session listening on port %s", app.session.port)
     app.session.wait()

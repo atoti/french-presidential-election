@@ -16,7 +16,6 @@ from .constants import (
 
 def create_election_cube(session: tt.Session, /) -> None:
     candidate_table = session.tables[Table.CANDIDATE_TBL.value]
-    # candidate_dtl_table = session.tables[Table.CANDIDATE_DTL_TBL]
     state_results_table = session.tables[Table.STATE_RESULTS_TBL.value]
     statistics_table = session.tables[Table.STATISTICS_TBL.value]
     location_table = session.tables[Table.LOCATION_TBL.value]

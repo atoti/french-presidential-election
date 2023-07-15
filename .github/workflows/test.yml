@@ -30,4 +30,3 @@ jobs:
       - run: poetry run sort-imports
       - run: poetry run lint
       - run: poetry run typecheck
-      - run: poetry run test

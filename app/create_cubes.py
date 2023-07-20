@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import atoti as tt
 
 from .constants import (
     Cube,
+    ElectionCubeHierarchy,
     ElectionCubeLevel,
     ElectionCubeMeasure,
-    ElectionCubeHierarchy,
     LocationTableColumn,
     StateResultsTableColumn,
     StatisticsTableColumn,
@@ -14,7 +16,6 @@ from .constants import (
 
 def create_election_cube(session: tt.Session, /) -> None:
     candidate_table = session.tables[Table.CANDIDATE_TBL.value]
-    # candidate_dtl_table = session.tables[Table.CANDIDATE_DTL_TBL]
     state_results_table = session.tables[Table.STATE_RESULTS_TBL.value]
     statistics_table = session.tables[Table.STATISTICS_TBL.value]
     location_table = session.tables[Table.LOCATION_TBL.value]
@@ -38,16 +39,19 @@ def create_election_cube(session: tt.Session, /) -> None:
     ]
 
     for m_name in m_name_stats:
-        m[m_name] = tt.value(
-            statistics_table[m_name],
-            levels=[
-                l[ElectionCubeLevel.DEPARTMENT.value],
-                l[ElectionCubeLevel.REGION.value],
-            ],
+        m[m_name] = tt.where(
+            ~l[ElectionCubeLevel.REGION.value].isnull(),
+            tt.agg.single_value(statistics_table[m_name]),
         )
 
-        # to sum up the statistics from Department/Region and above
-        m[f"Total {m_name}".capitalize()] = tt.agg.sum(m[m_name])
+        m[f"Total {m_name}".capitalize()] = tt.agg.sum(
+            m[m_name],
+            scope=tt.OriginScope(
+                l[ElectionCubeLevel.REGION.value],
+                l[ElectionCubeLevel.DEPARTMENT.value],
+                l[ElectionCubeLevel.RESULT_DATE.value],
+            ),
+        )
 
     m.update(
         {
@@ -57,20 +61,21 @@ def create_election_cube(session: tt.Session, /) -> None:
             ElectionCubeMeasure.NUM_REGIONS.value: tt.agg.count_distinct(
                 state_results_table[StateResultsTableColumn.REGION.value]
             ),
-            ElectionCubeMeasure.LONGITUDE.value: tt.value(
-                location_table[LocationTableColumn.LONGITUDE.value]
+            ElectionCubeMeasure.LONGITUDE.value: tt.where(
+                ~l[StateResultsTableColumn.REGION.value].isnull(),
+                tt.agg.single_value(
+                    location_table[LocationTableColumn.LONGITUDE.value]
+                ),
             ),
-            ElectionCubeMeasure.LATITUDE.value: tt.value(
-                location_table[LocationTableColumn.LATITUDE.value]
+            ElectionCubeMeasure.LATITUDE.value: tt.where(
+                ~l[StateResultsTableColumn.REGION.value].isnull(),
+                tt.agg.single_value(location_table[LocationTableColumn.LATITUDE.value]),
             ),
-            ElectionCubeMeasure.VOTES.value: tt.value(
-                state_results_table[StateResultsTableColumn.VOTES.value],
-                levels=[
-                    l[StateResultsTableColumn.RESULT_DATE.value],
-                    l[StateResultsTableColumn.REGION.value],
-                    l[StateResultsTableColumn.DEPARTMENT.value],
-                    l[StateResultsTableColumn.CANDIDATE_NAME.value],
-                ],
+            ElectionCubeMeasure.VOTES.value: tt.where(
+                ~l[StateResultsTableColumn.CANDIDATE_NAME.value].isnull(),
+                tt.agg.single_value(
+                    state_results_table[ElectionCubeMeasure.VOTES.value]
+                ),
             ),
         }
     )
@@ -80,7 +85,12 @@ def create_election_cube(session: tt.Session, /) -> None:
         {
             ElectionCubeMeasure.TOTAL_VOTES_DEPARTMENTS.value: tt.agg.sum(
                 m[ElectionCubeMeasure.VOTES.value],
-                scope=tt.scope.origin(l[ElectionCubeLevel.CANDIDATE_NAME.value]),
+                scope=tt.OriginScope(
+                    l[ElectionCubeLevel.REGION.value],
+                    l[ElectionCubeLevel.DEPARTMENT.value],
+                    l[ElectionCubeLevel.RESULT_DATE.value],
+                    l[StateResultsTableColumn.CANDIDATE_NAME.value],
+                ),
             ),
             ElectionCubeMeasure.PERCENT_VALID_VOTES.value: m[
                 ElectionCubeMeasure.TOTAL_VALID_VOTES.value
@@ -133,12 +143,12 @@ def create_election_cube(session: tt.Session, /) -> None:
             ),
             ElectionCubeMeasure.WINNING_VOTES.value: tt.agg.max(
                 m[ElectionCubeMeasure.TOTAL_VOTES_DEPARTMENTS.value],
-                scope=tt.scope.origin(l[ElectionCubeLevel.CANDIDATE_NAME.value]),
+                scope=tt.OriginScope(l[ElectionCubeLevel.CANDIDATE_NAME.value]),
             ),
         }
     )
 
-    for measure_name in m.keys():
+    for measure_name in m:
         if "% " in measure_name:
             m[measure_name].formatter = "DOUBLE[0.000%]"
 

@@ -25,14 +25,6 @@
       "description": "The Python version to use (should be a pinned version compatible with the one declared in pyproject.toml).",
       "value": "3.9.9"
     },
-    "POETRY_HTTP_BASIC_ATOTI_PLUS_USERNAME":{
-      "description": "Username for the Atoti+ download",
-      "value": ""
-    },
-    "POETRY_HTTP_BASIC_ATOTI_PLUS_PASSWORD":{
-      "description": "Password for the Atoti+ download",
-      "value": ""
-    },
     "ATOTI_LICENSE":{
       "description": "Path to license file or base64 string for license key",
       "value": ""

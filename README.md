@@ -50,8 +50,8 @@ A few examples:
 ## Atoti
 
 This version includes authentication which requires [the locked version](https://docs.atoti.io/latest/how_tos/unlock_all_features.html) of Atoti.  
-Authentication is required in order to control access to the web application and prevent overwriting of dashboards by unauthorised personnel.  
-Refer to [create_users.py](app/create_users.py) for the authorised users and their access rights.
+Authentication is required in order to control access to the web application and prevent overwriting of dashboards by unauthorized personnel.  
+Refer to [create_users.py](app/create_users.py) for the authorized users and their access rights.
 
 You can [register online for an evaluation license](https://atoti.io/evaluation-license-request/) and check out how to [unlock all features of Atoti](https://docs.atoti.io/latest/how_tos/unlock_all_features.html).
   
